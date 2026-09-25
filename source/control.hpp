@@ -1,5 +1,9 @@
+#include <bits/stdc++.h>
+#include <string>
 #include "states.hpp"
 #include "interface.hpp"
+
+std::unordered_map<std::string, Texture2D> textures;
 
 void init() {
     static const int SCREEN_WIDTH = 800;
@@ -8,6 +12,8 @@ void init() {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Controle da Escotilha");
 
     SetTargetFPS(60);
+
+    textures["shard"] = LoadTexture("./assets/dragonshard.png");
 }
 
 void update(Gamestate &state) {
@@ -51,4 +57,11 @@ void render(Gamestate &state) {
         break;
     }
     EndDrawing();
+}
+
+void shutdown() {
+    for (auto it : textures) {
+        UnloadTexture(it.second);
+    }
+    CloseWindow();
 }

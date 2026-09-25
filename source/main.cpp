@@ -11,7 +11,7 @@ int main() {
         render(state);
     }
 
-    CloseWindow();
+    shutdown();
 
     return 0;
 }
