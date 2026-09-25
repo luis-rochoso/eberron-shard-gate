@@ -3,9 +3,9 @@
 int main() {
     Gamestate state {closed};
 
-    while (true) {
-        render();
-        update();
+    while ((state != end) or !WindowShouldClose()) {
+        update(state);
+        render(state);
     }
 
     return 0;
