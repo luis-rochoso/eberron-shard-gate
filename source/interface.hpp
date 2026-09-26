@@ -80,6 +80,12 @@ void drawRelay(Relay relay) {
 
     Rectangle mainframe = {relay.origin.x, relay.origin.y, RELAY_WIDTH, RELAY_HEIGHT};
 
+    // Body
     DrawRectangleRec(mainframe, GRAY);
     DrawRectangleLinesEx(mainframe, 3, WHITE);
+
+    // Connector indicators
+    DrawCircleSector(relay.control->hookCenter, buttonRadius / 2, 270.0f, 90.0f, 1, ORANGE);
+    DrawCircleSector(relay.input->hookCenter, buttonRadius / 2, 270.0f, 90.0f, 1, ORANGE);
+
 }

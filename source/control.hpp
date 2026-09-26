@@ -97,7 +97,8 @@ void render(Gamestate &state) {
         for (auto& [label, connector] : inputs) {
             if (connector.isConnected) {
                 DrawLine(connector.hookCenter.x, connector.hookCenter.y,
-                         connector.linked->hookCenter.x, connector.linked->hookCenter.y, BLUE);
+                         connector.linked->hookCenter.x, connector.linked->hookCenter.y,
+                         connector.isPowered ? GREEN : RED);
             }
         }
         // for (Link l : powerLines) {
