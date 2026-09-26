@@ -64,10 +64,13 @@ void drawCrystals(Texture2D shard) {
 void drawButtons() {
 
     // Button 1
-    DrawCircle(buttonCenter[0].x, buttonCenter[0].y, buttonRadius, shardLight[0] ? GREEN : RED);
+    DrawCircleV(buttonCenter[0], buttonRadius + 3, BLACK);
+    DrawCircleV(buttonCenter[0], buttonRadius, shardLight[0] ? GREEN : RED);
+
 
     // Button 2
-    DrawCircle(buttonCenter[1].x, buttonCenter[1].y, buttonRadius, shardLight[1] ? GREEN : RED);
+    DrawCircleV(buttonCenter[1], buttonRadius + 3, BLACK);
+    DrawCircleV(buttonCenter[1], buttonRadius, shardLight[1] ? GREEN : RED);
 
     // Output signal
     DrawCircle(PLATE_WIDTH + 75, buttonCenter[1].y, buttonRadius / 2, exitLight ? GREEN : RED);
@@ -78,4 +81,5 @@ void drawRelay(Relay relay) {
     Rectangle mainframe = {relay.origin.x, relay.origin.y, RELAY_WIDTH, RELAY_HEIGHT};
 
     DrawRectangleRec(mainframe, GRAY);
+    DrawRectangleLinesEx(mainframe, 3, WHITE);
 }

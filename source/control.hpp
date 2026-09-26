@@ -102,7 +102,7 @@ void render(Gamestate &state) {
         drawButtons();
         // Draw Connectors
         for (const auto& [label, connector] : inputs) {
-            DrawRectangleLinesEx(connector.hook, 3, WHITE);
+            DrawRectangleLinesEx(connector.hook, 3, ORANGE);
         }
         for (const auto& [label, connector] : outputs) {
             DrawRectangleLinesEx(connector.hook, 3, YELLOW);
