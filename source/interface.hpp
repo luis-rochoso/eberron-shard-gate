@@ -1,4 +1,4 @@
-#include "raylib.h"
+#include "relay.hpp"
 
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 450;
@@ -71,4 +71,11 @@ void drawButtons() {
 
     // Output signal
     DrawCircle(PLATE_WIDTH + 75, buttonCenter[1].y, buttonRadius / 2, exitLight ? GREEN : RED);
+}
+
+void drawRelay(Relay relay) {
+
+    Rectangle mainframe = {relay.origin.x, relay.origin.y, RELAY_WIDTH, RELAY_HEIGHT};
+
+    DrawRectangleRec(mainframe, GRAY);
 }

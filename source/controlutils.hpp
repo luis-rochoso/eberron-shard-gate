@@ -1,31 +1,15 @@
 #include <bits/stdc++.h>
 #include <string>
 #include "states.hpp"
+#include "connectors.hpp"
+#include "relay.hpp"
 #include "interface.hpp"
-
-struct InputConnector {
-    Rectangle hook;
-    Vector2 hookCenter;
-    
-    bool isPowered {false};
-    bool isConnected {false};
-
-    struct OutputConnector {
-    Rectangle hook;
-    Vector2 hookCenter;
-
-    bool isPowered {false};
-
-    std::vector<InputConnector*> linkeds;
-    };
-
-    OutputConnector* linked; // member of InputConnector
-};
-
-
 
 std::unordered_map<std::string, InputConnector> inputs;
 std::unordered_map<std::string, InputConnector::OutputConnector> outputs;
+
+Relay defaultOn;
+Relay defaultOff;
 
 InputConnector* dragged = nullptr;
 
@@ -75,6 +59,14 @@ void eraseLink(InputConnector* dragged) {
     }
 }
 
+void buildRelays() {
+    defaultOn.origin = {500, 250};
+    defaultOn.defaultMode = true;
+
+    defaultOff.origin = {300, 100};
+    defaultOff.defaultMode = false;
+}
+
 void buildConnectors() {
 
     // Shard connectors
@@ -88,6 +80,21 @@ void buildConnectors() {
                                     outputs["shard1"].hook.y + (outputs["shard1"].hook.height / 2)};
     outputs["shard2"].hookCenter = {outputs["shard2"].hook.x + (outputs["shard2"].hook.width / 2),
                                     outputs["shard2"].hook.y + (outputs["shard2"].hook.height / 2)};
+    
+    // Relay connectors
+    inputs["rOnControl"].hook = {defaultOn.origin.x - 10, defaultOn.origin.y + 25, 25, 25};
+    defaultOn.control = &inputs["rOnControl"];
+    inputs["rOnInput"].hook = {defaultOn.origin.x - 10, defaultOn.origin.y + 75, 25, 25};
+    defaultOn.input = &inputs["rOnInput"];
+    outputs["rOnOut"].hook = {defaultOn.origin.x + RELAY_WIDTH - 10, defaultOn.origin.y + 50, 25, 25};
+    defaultOn.output = &outputs["rOnOut"];
+
+    inputs["rOffControl"].hook = {defaultOff.origin.x - 10, defaultOff.origin.y + 25, 25, 25};
+    defaultOff.control = &inputs["rOffControl"];
+    inputs["rOffInput"].hook = {defaultOff.origin.x - 10, defaultOff.origin.y + 75, 25, 25};
+    defaultOff.input = &inputs["rOffInput"];
+    outputs["rOffOut"].hook = {defaultOff.origin.x + RELAY_WIDTH - 10, defaultOff.origin.y + 50, 25, 25};
+    defaultOff.output = &outputs["rOffOut"];
 
     // Exit connector
     inputs["exit"].hook = {PLATE_X + PLATE_WIDTH - 20, shardButtons[1].center.y - 12.5f, 25, 25};
@@ -101,13 +108,17 @@ void powerConnectors() {
     outputs["shard1"].isPowered = shardPower[1];
     outputs["shard2"].isPowered = true;
 
+    for (auto& [label, connector] : inputs) {
+        
+        if (connector.isConnected) {
+            connector.isPowered = connector.linked->isPowered;
+        }
+        else {
+            connector.isPowered = false;
+        }
 
-    if (inputs["exit"].isConnected) {
-        inputs["exit"].isPowered = inputs["exit"].linked->isPowered;
     }
-    else {
-        inputs["exit"].isPowered = false;
-    }
+
     exitPower = inputs["exit"].isPowered;
 
 }
@@ -136,12 +147,4 @@ bool releasedOverOutputConnector() {
         }
     }
     return false;
-}
-
-
-
-void getPower(InputConnector &connector) {
-    if (connector.isConnected) {
-
-    }
 }

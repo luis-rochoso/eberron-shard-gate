@@ -15,6 +15,7 @@ void init() {
 
     UnloadImage(shard);
 
+    buildRelays();
     buildConnectors();
 }
 
@@ -34,7 +35,11 @@ void update(Gamestate &state) {
     
     case open:    
 
+        defaultOn.refreshHookPositions();
+        defaultOff.refreshHookPositions();
         powerConnectors();
+        defaultOn.powerRelay();
+        defaultOff.powerRelay();
         checkButtonPress();
         toggleLights();
         if (clickedInputConnector()) {state = dragging;}
@@ -43,7 +48,7 @@ void update(Gamestate &state) {
     case dragging:
 
         powerConnectors();
-        
+
         dragLineStartPoint = dragged->hookCenter;
         dragLineEndPoint = mousePoint;
 
@@ -77,9 +82,10 @@ void render(Gamestate &state) {
     case open:
         drawBackground();
         drawOpenPlate();
+        drawRelay(defaultOn);
+        drawRelay(defaultOff);
         drawCrystals(textures["shard"]);
         drawButtons();
-        // Draw connectors
 
         for (Link l : powerLines) {
             DrawLine(l.start.x, l.start.y, l.end.x, l.end.y, BLUE);
@@ -90,6 +96,8 @@ void render(Gamestate &state) {
     case dragging:
         drawBackground();
         drawOpenPlate();
+        drawRelay(defaultOn);
+        drawRelay(defaultOff);
         drawCrystals(textures["shard"]);
         drawButtons();
         // Draw Connectors
@@ -97,7 +105,7 @@ void render(Gamestate &state) {
             DrawRectangleLinesEx(connector.hook, 3, WHITE);
         }
         for (const auto& [label, connector] : outputs) {
-            DrawRectangleLinesEx(connector.hook, 3, WHITE);
+            DrawRectangleLinesEx(connector.hook, 3, YELLOW);
         }
 
         // Draw established lines
