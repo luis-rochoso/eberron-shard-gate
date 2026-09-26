@@ -9,5 +9,5 @@ cmake --build build
 ```
 then run with
 ```
-./build/khyberShardGate
+./build/eberronShardGate
 ```
