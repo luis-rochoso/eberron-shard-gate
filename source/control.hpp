@@ -1,13 +1,4 @@
-#include <bits/stdc++.h>
-#include <string>
-#include "states.hpp"
-#include "interface.hpp"
-
-Vector2 mousePoint { 0.0f, 0.0f };
-
-bool shardPower [2] = {false, false};
-
-std::unordered_map<std::string, Texture2D> textures;
+#include "controlutils.hpp"
 
 void init() {
 
@@ -23,35 +14,47 @@ void init() {
     textures["shard"] = LoadTextureFromImage(shard);
 
     UnloadImage(shard);
+
+    buildConnectors();
 }
 
 void update(Gamestate &state) {
 
     mousePoint = GetMousePosition();
+    InputConnector::OutputConnector target;
 
-    switch (state)
-    {
+    dragLineStartPoint = { 0.0f, 0.0f };
+    dragLineEndPoint = { 0.0f, 0.0f };
+
+    switch (state) {
+
     case closed:
         state = open;
         break;
     
-    case open:
-        // Handling pressing Crystal buttons
-        for (int i = 0; i < 2; ++i) {
-            if (CheckCollisionPointCircle(mousePoint, shardButtons[i].center, buttonRadius)) {
-                if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
-                    shardPower[i] = !shardPower[i];
-                }
-            }    
-        }
+    case open:    
 
-        // Lighting up or out the toggable shards  
-        for (int i = 0; i < 2; ++i) {
-            shardLight[i] = shardPower[i];
-        }
+        checkButtonPress();
+        toggleLights();
+        if (clickedInputConnector()) {state = dragging;}
         break;
 
     case dragging:
+
+        dragLineStartPoint = dragged->hookCenter;
+        dragLineEndPoint = mousePoint;
+
+        if (!IsMouseButtonDown(MOUSE_BUTTON_LEFT)) { // a linha some
+
+            if (releasedOverOutputConnector()) {
+                dragLineEndPoint = dragged->linked->hookCenter;
+                powerLines.push_back({dragLineStartPoint, dragLineEndPoint});
+            }
+            else {
+                dragged = nullptr;
+            }
+            state = open;
+        }
         break;
     
     default:
@@ -73,9 +76,35 @@ void render(Gamestate &state) {
         drawOpenPlate();
         drawCrystals(textures["shard"]);
         drawButtons();
+        // Draw connectors
+
+        for (Link l : powerLines) {
+            DrawLine(l.start.x, l.start.y, l.end.x, l.end.y, BLUE);
+        }
+        
         break;
 
     case dragging:
+        drawBackground();
+        drawOpenPlate();
+        drawCrystals(textures["shard"]);
+        drawButtons();
+        // Draw Connectors
+        for (const auto& [label, connector] : inputs) {
+            DrawRectangleLinesEx(connector.hook, 3, WHITE);
+        }
+        for (const auto& [label, connector] : outputs) {
+            DrawRectangleLinesEx(connector.hook, 3, WHITE);
+        }
+
+        // Draw previous lines
+        for (Link l : powerLines) {
+            DrawLine(l.start.x, l.start.y, l.end.x, l.end.y, BLUE);
+        }
+
+        // Draw dragline
+        DrawLineBezier(dragLineStartPoint, dragLineEndPoint, 5, ORANGE);
+
         break;
     
     default:
