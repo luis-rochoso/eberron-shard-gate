@@ -35,10 +35,12 @@ void update(Gamestate &state) {
     
     case open:    
 
-        if (CheckCollisionPointRec(mousePoint, defaultOn.hitbox) and IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+        if (CheckCollisionPointRec(mousePoint, defaultOn.hitbox) and IsMouseButtonDown(MOUSE_BUTTON_LEFT)
+            and !defaultOn.mouseOverConnectors(mousePoint)) {
             dragRelay(defaultOn);
         }
-        if (CheckCollisionPointRec(mousePoint, defaultOff.hitbox) and IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+        if (CheckCollisionPointRec(mousePoint, defaultOff.hitbox) and IsMouseButtonDown(MOUSE_BUTTON_LEFT)
+            and !defaultOff.mouseOverConnectors(mousePoint)) {
             dragRelay(defaultOff);   
         }
 
@@ -63,11 +65,7 @@ void update(Gamestate &state) {
 
         if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
 
-            if (releasedOverOutputConnector()) {
-                dragLineEndPoint = dragged->linked->hookCenter;
-                powerLines.push_back({dragLineStartPoint, dragLineEndPoint});
-            }
-            else {
+            if (!releasedOverOutputConnector()) {
                 dragged = nullptr;
             }
             state = open;
@@ -96,9 +94,15 @@ void render(Gamestate &state) {
         drawCrystals(textures["shard"]);
         drawButtons();
 
-        for (Link l : powerLines) {
-            DrawLine(l.start.x, l.start.y, l.end.x, l.end.y, BLUE);
+        for (auto& [label, connector] : inputs) {
+            if (connector.isConnected) {
+                DrawLine(connector.hookCenter.x, connector.hookCenter.y,
+                         connector.linked->hookCenter.x, connector.linked->hookCenter.y, BLUE);
+            }
         }
+        // for (Link l : powerLines) {
+        //     DrawLine(l.start.x, l.start.y, l.end.x, l.end.y, BLUE);
+        // }
         
         break;
 
@@ -118,8 +122,16 @@ void render(Gamestate &state) {
         }
 
         // Draw established lines
-        for (Link l : powerLines) {
-            DrawLine(l.start.x, l.start.y, l.end.x, l.end.y, BLUE);
+        // for (Link l : powerLines) {
+        //     DrawLine(l.start.x, l.start.y, l.end.x, l.end.y, BLUE);
+        // }
+
+        // for every connected input connector, draw a line from its hookcenter to its linked hookcenter
+        for (auto& [label, connector] : inputs) {
+            if (connector.isConnected) {
+                DrawLine(connector.hookCenter.x, connector.hookCenter.y,
+                         connector.linked->hookCenter.x, connector.linked->hookCenter.y, BLUE);
+            }
         }
 
         // Draw dragline

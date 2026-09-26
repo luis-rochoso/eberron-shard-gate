@@ -5,6 +5,10 @@
 #include "relay.hpp"
 #include "interface.hpp"
 
+bool operator==(Vector2 a, Vector2 b) {
+    return (a.x == b.x) and (a.y == b.y);
+}
+
 std::unordered_map<std::string, InputConnector> inputs;
 std::unordered_map<std::string, InputConnector::OutputConnector> outputs;
 
@@ -17,8 +21,6 @@ struct Link {
     Vector2 start;
     Vector2 end;
 };
-
-std::list<Link> powerLines;
 
 Vector2 mousePoint { 0.0f, 0.0f };
 Vector2 dragLineStartPoint = { 0.0f, 0.0f };
@@ -47,16 +49,6 @@ void toggleLights() {
         shardLight[i] = shardPower[i];
     }
     exitLight = exitPower;
-}
-
-void eraseLink(InputConnector* dragged) {
-    // procurar pelo start equivalente ao hookCenter na lista de links
-    for (auto it = powerLines.begin(); it != powerLines.end(); ++it) {
-        if (it->start.x == dragged->hookCenter.x and it->start.y == dragged->hookCenter.y) {
-            powerLines.erase(it);
-            return;
-        }
-    }
 }
 
 void buildRelays() {
@@ -129,7 +121,6 @@ bool clickedInputConnector() {
         if (CheckCollisionPointRec(mousePoint, connector.hook) and IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
             dragged = &connector;
             dragged->isConnected = false;
-            eraseLink(dragged);
             return true;
         }
     }
@@ -150,6 +141,7 @@ bool releasedOverOutputConnector() {
 }
 
 void dragRelay(Relay &relay) {
+
     relay.center = mousePoint;
     relay.RefreshOriginPosition();
 
@@ -165,4 +157,5 @@ void dragRelay(Relay &relay) {
     if (relay.origin.y + RELAY_HEIGHT > PLATE_Y + PLATE_HEIGHT) {
         relay.origin.y = PLATE_Y + PLATE_HEIGHT - RELAY_HEIGHT;
     }
+
 }

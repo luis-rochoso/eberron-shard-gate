@@ -36,7 +36,7 @@ struct Relay {
 
     void refreshHookPositions() {
         hitbox = {origin.x, origin.y, RELAY_WIDTH, RELAY_HEIGHT};
-        
+
         control->hook = {origin.x - 10, origin.y + 12.5f, 25, 25};
         control->hookCenter = {control->hook.x + (control->hook.width / 2),
                                control->hook.y + (control->hook.height / 2)};
@@ -48,6 +48,14 @@ struct Relay {
         output->hook = {origin.x + RELAY_WIDTH - 10, origin.y + 37.5f, 25, 25};
         output->hookCenter = {output->hook.x + (output->hook.width / 2),
                               output->hook.y + (output->hook.height / 2)};
+    }
+
+    bool mouseOverConnectors(Vector2 mousepoint) {
+        if (CheckCollisionPointRec(mousepoint, control->hook)) {return true;}
+        if (CheckCollisionPointRec(mousepoint, input->hook)) {return true;}
+        if (CheckCollisionPointRec(mousepoint, output->hook)) {return true;}
+
+        return false;
     }
 };
 
