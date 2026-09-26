@@ -82,18 +82,18 @@ void buildConnectors() {
                                     outputs["shard2"].hook.y + (outputs["shard2"].hook.height / 2)};
     
     // Relay connectors
-    inputs["rOnControl"].hook = {defaultOn.origin.x - 10, defaultOn.origin.y + 25, 25, 25};
+    inputs["rOnControl"].hook = {defaultOn.origin.x - 10, defaultOn.origin.y + 12.5f, 25, 25};
     defaultOn.control = &inputs["rOnControl"];
-    inputs["rOnInput"].hook = {defaultOn.origin.x - 10, defaultOn.origin.y + 75, 25, 25};
+    inputs["rOnInput"].hook = {defaultOn.origin.x - 10, defaultOn.origin.y + 62.5f, 25, 25};
     defaultOn.input = &inputs["rOnInput"];
-    outputs["rOnOut"].hook = {defaultOn.origin.x + RELAY_WIDTH - 10, defaultOn.origin.y + 50, 25, 25};
+    outputs["rOnOut"].hook = {defaultOn.origin.x + RELAY_WIDTH - 10, defaultOn.origin.y + 37.5f, 25, 25};
     defaultOn.output = &outputs["rOnOut"];
 
-    inputs["rOffControl"].hook = {defaultOff.origin.x - 10, defaultOff.origin.y + 25, 25, 25};
+    inputs["rOffControl"].hook = {defaultOff.origin.x - 10, defaultOff.origin.y + 12.5f, 25, 25};
     defaultOff.control = &inputs["rOffControl"];
-    inputs["rOffInput"].hook = {defaultOff.origin.x - 10, defaultOff.origin.y + 75, 25, 25};
+    inputs["rOffInput"].hook = {defaultOff.origin.x - 10, defaultOff.origin.y + 62.5f, 25, 25};
     defaultOff.input = &inputs["rOffInput"];
-    outputs["rOffOut"].hook = {defaultOff.origin.x + RELAY_WIDTH - 10, defaultOff.origin.y + 50, 25, 25};
+    outputs["rOffOut"].hook = {defaultOff.origin.x + RELAY_WIDTH - 10, defaultOff.origin.y + 37.5f, 25, 25};
     defaultOff.output = &outputs["rOffOut"];
 
     // Exit connector

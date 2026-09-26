@@ -31,15 +31,15 @@ struct Relay {
     }
 
     void refreshHookPositions() {
-        control->hook = {origin.x - 10, origin.y + 25, 25, 25};
+        control->hook = {origin.x - 10, origin.y + 12.5f, 25, 25};
         control->hookCenter = {control->hook.x + (control->hook.width / 2),
                                control->hook.y + (control->hook.height / 2)};
 
-        input->hook = {origin.x - 10, origin.y + 75, 25, 25};
+        input->hook = {origin.x - 10, origin.y + 62.5f, 25, 25};
         input->hookCenter = {input->hook.x + (input->hook.width / 2),
                              input->hook.y + (input->hook.height / 2)};
 
-        output->hook = {origin.x + RELAY_WIDTH, origin.y + 50, 25, 25};
+        output->hook = {origin.x + RELAY_WIDTH - 10, origin.y + 37.5f, 25, 25};
         output->hookCenter = {output->hook.x + (output->hook.width / 2),
                               output->hook.y + (output->hook.height / 2)};
     }
