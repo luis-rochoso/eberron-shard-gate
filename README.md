@@ -1,4 +1,5 @@
 Quick project I made to impress my friends at the D&D table. They will need to solve this puzzle to open a hatch in the sewers to invade a forgotten hobgoblin dungeon.
+Completely inspired by the first level of [NandGame](https://nandgame.com/).
 
 ### Compiling and running
 Use cmake to compile the program at the root
