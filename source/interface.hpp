@@ -63,8 +63,11 @@ void drawCrystals(Texture2D shard) {
 void drawButtons() {
 
     // Button 1
-    DrawCircle(buttonCenter[0].x, buttonCenter[0].y, buttonRadius, GREEN);
+    DrawCircle(buttonCenter[0].x, buttonCenter[0].y, buttonRadius, shardLight[0] ? GREEN : RED);
 
     // Button 2
-    DrawCircle(buttonCenter[1].x, buttonCenter[1].y, buttonRadius, GREEN);
+    DrawCircle(buttonCenter[1].x, buttonCenter[1].y, buttonRadius, shardLight[1] ? GREEN : RED);
+
+    // Output signal
+    DrawCircle(PLATE_WIDTH + 75, buttonCenter[1].y, buttonRadius / 2, RED);
 }

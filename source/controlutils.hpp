@@ -106,7 +106,7 @@ bool clickedInputConnector() {
 bool releasedOverOutputConnector() {
     // Checks if the link was released over an output hook
     for (auto& [label, connector] : outputs) {
-        if (CheckCollisionPointRec(mousePoint, connector.hook) and !IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+        if (CheckCollisionPointRec(mousePoint, connector.hook) and IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
             dragged->linked = &connector; // Input's connected only to this output
             dragged->isConnected = true;
             connector.linkeds.push_back(dragged); // Output adds this input to its list of connections

@@ -44,7 +44,7 @@ void update(Gamestate &state) {
         dragLineStartPoint = dragged->hookCenter;
         dragLineEndPoint = mousePoint;
 
-        if (!IsMouseButtonDown(MOUSE_BUTTON_LEFT)) { // a linha some
+        if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
 
             if (releasedOverOutputConnector()) {
                 dragLineEndPoint = dragged->linked->hookCenter;
