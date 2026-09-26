@@ -148,3 +148,21 @@ bool releasedOverOutputConnector() {
     }
     return false;
 }
+
+void dragRelay(Relay &relay) {
+    relay.center = mousePoint;
+    relay.RefreshOriginPosition();
+
+    if (relay.origin.x < PLATE_X) {
+        relay.origin.x = PLATE_X;
+    }
+    if (relay.origin.x + RELAY_WIDTH > PLATE_X + PLATE_WIDTH) {
+        relay.origin.x = PLATE_X + PLATE_WIDTH - RELAY_WIDTH;
+    }
+    if (relay.origin.y < PLATE_Y) {
+        relay.origin.y = PLATE_Y;
+    }
+    if (relay.origin.y + RELAY_HEIGHT > PLATE_Y + PLATE_HEIGHT) {
+        relay.origin.y = PLATE_Y + PLATE_HEIGHT - RELAY_HEIGHT;
+    }
+}

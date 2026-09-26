@@ -26,11 +26,17 @@ struct Relay {
 
     // Position
     Vector2 origin {0, 0};
-    Vector2 getCenter() {
-        return {origin.x + RELAY_WIDTH / 2, origin.y + RELAY_HEIGHT};
+    Vector2 center {origin.x + RELAY_WIDTH / 2, origin.y + RELAY_HEIGHT};
+    Rectangle hitbox {origin.x, origin.y, RELAY_WIDTH, RELAY_HEIGHT};
+
+    void RefreshOriginPosition() {
+        origin.x = center.x - RELAY_WIDTH / 2;
+        origin.y = center.y - RELAY_HEIGHT / 2;
     }
 
     void refreshHookPositions() {
+        hitbox = {origin.x, origin.y, RELAY_WIDTH, RELAY_HEIGHT};
+        
         control->hook = {origin.x - 10, origin.y + 12.5f, 25, 25};
         control->hookCenter = {control->hook.x + (control->hook.width / 2),
                                control->hook.y + (control->hook.height / 2)};

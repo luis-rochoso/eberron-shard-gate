@@ -35,11 +35,20 @@ void update(Gamestate &state) {
     
     case open:    
 
+        if (CheckCollisionPointRec(mousePoint, defaultOn.hitbox) and IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+            dragRelay(defaultOn);
+        }
+        if (CheckCollisionPointRec(mousePoint, defaultOff.hitbox) and IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+            dragRelay(defaultOff);   
+        }
+
         defaultOn.refreshHookPositions();
         defaultOff.refreshHookPositions();
+
         powerConnectors();
         defaultOn.powerRelay();
         defaultOff.powerRelay();
+
         checkButtonPress();
         toggleLights();
         if (clickedInputConnector()) {state = dragging;}
