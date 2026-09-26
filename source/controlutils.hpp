@@ -26,6 +26,7 @@ Vector2 mousePoint { 0.0f, 0.0f };
 Vector2 dragLineStartPoint = { 0.0f, 0.0f };
 Vector2 dragLineEndPoint { 0.0f, 0.0f };
 
+bool* screws = new bool[4] {true, true, true, true};
 bool shardPower[2] = {false, false};
 bool exitPower = false;
 

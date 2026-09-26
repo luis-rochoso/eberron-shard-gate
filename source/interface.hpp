@@ -22,11 +22,38 @@ Vector2 buttonCenter[2] = {{PLATE_X - (PLATE_WIDTH/16), PLATE_Y + 50},
 Circle shardButtons[2] = {{buttonCenter[0], buttonRadius},
                           {buttonCenter[1], buttonRadius}};
 
+Vector2 screwCenter[4] = {
+        {PLATE_X + PLATE_WIDTH / 8, PLATE_Y + PLATE_HEIGHT / 4},
+        {PLATE_X + PLATE_WIDTH - PLATE_WIDTH / 8, PLATE_Y + PLATE_HEIGHT / 4},
+        {PLATE_X + PLATE_WIDTH / 8, PLATE_Y + PLATE_HEIGHT - PLATE_HEIGHT / 4},
+        {PLATE_X + PLATE_WIDTH - PLATE_WIDTH / 8, PLATE_Y + PLATE_HEIGHT - PLATE_HEIGHT / 4}
+    };
+
 bool shardLight[2] = {false, false};
 bool exitLight = false;
 
 void drawBackground() {
     ClearBackground(GRAY);
+}
+
+void drawClosedPlate(bool* screws) {
+    Rectangle plate {PLATE_X, PLATE_Y, PLATE_WIDTH, PLATE_HEIGHT};
+    
+
+    DrawRectangle(plate.x, plate.y, plate.width, plate.height, LIGHTGRAY);
+    DrawRectangleLinesEx(plate, 10, BLACK);
+
+    for (int i = 0; i < 4; ++i) {
+        if (screws[i]) {
+            // draw screw
+            DrawCircleV(screwCenter[i], buttonRadius, BLACK);
+            DrawCircleV(screwCenter[i], buttonRadius - 5, DARKGRAY);
+        }
+        else {
+            // draw hole
+            DrawCircleV(screwCenter[i], buttonRadius - 5, BLACK);
+        }
+    }
 }
 
 void drawOpenPlate() {

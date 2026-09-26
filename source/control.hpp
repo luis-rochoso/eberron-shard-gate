@@ -22,6 +22,7 @@ void init() {
 void update(Gamestate &state) {
 
     mousePoint = GetMousePosition();
+    int holeCounter = 0;
     InputConnector::OutputConnector target;
 
     dragLineStartPoint = { 0.0f, 0.0f };
@@ -30,7 +31,23 @@ void update(Gamestate &state) {
     switch (state) {
 
     case closed:
-        state = open;
+        for (int i = 0; i < 4; ++i) {
+            if (!screws[i]) {
+                ++holeCounter;
+            }
+        }
+        if (holeCounter == 4) {
+            state = open;
+            break;
+        }
+
+        for (int i = 0; i < 4; ++i) {
+            if (CheckCollisionPointCircle(mousePoint, screwCenter[i], buttonRadius)
+                and IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    screws[i] = false;
+            }
+        }
+        
         break;
     
     case open:    
@@ -84,6 +101,9 @@ void render(Gamestate &state) {
     switch (state)
     {
     case closed:
+        drawBackground();
+        drawClosedPlate(screws);
+        drawButtons();
         break;
 
     case open:
@@ -101,9 +121,6 @@ void render(Gamestate &state) {
                          connector.isPowered ? GREEN : RED);
             }
         }
-        // for (Link l : powerLines) {
-        //     DrawLine(l.start.x, l.start.y, l.end.x, l.end.y, BLUE);
-        // }
         
         break;
 
@@ -121,11 +138,6 @@ void render(Gamestate &state) {
         for (const auto& [label, connector] : outputs) {
             DrawRectangleLinesEx(connector.hook, 3, YELLOW);
         }
-
-        // Draw established lines
-        // for (Link l : powerLines) {
-        //     DrawLine(l.start.x, l.start.y, l.end.x, l.end.y, BLUE);
-        // }
 
         // for every connected input connector, draw a line from its hookcenter to its linked hookcenter
         for (auto& [label, connector] : inputs) {
@@ -150,5 +162,6 @@ void shutdown() {
     for (auto it : textures) {
         UnloadTexture(it.second);
     }
+    delete[] screws;
     CloseWindow();
 }
