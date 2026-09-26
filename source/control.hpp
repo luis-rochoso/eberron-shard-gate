@@ -34,6 +34,7 @@ void update(Gamestate &state) {
     
     case open:    
 
+        powerConnectors();
         checkButtonPress();
         toggleLights();
         if (clickedInputConnector()) {state = dragging;}
@@ -41,6 +42,8 @@ void update(Gamestate &state) {
 
     case dragging:
 
+        powerConnectors();
+        
         dragLineStartPoint = dragged->hookCenter;
         dragLineEndPoint = mousePoint;
 
@@ -97,7 +100,7 @@ void render(Gamestate &state) {
             DrawRectangleLinesEx(connector.hook, 3, WHITE);
         }
 
-        // Draw previous lines
+        // Draw established lines
         for (Link l : powerLines) {
             DrawLine(l.start.x, l.start.y, l.end.x, l.end.y, BLUE);
         }

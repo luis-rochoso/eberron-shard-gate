@@ -7,11 +7,14 @@ struct InputConnector {
     Rectangle hook;
     Vector2 hookCenter;
     
+    bool isPowered {false};
     bool isConnected {false};
 
     struct OutputConnector {
     Rectangle hook;
     Vector2 hookCenter;
+
+    bool isPowered {false};
 
     std::vector<InputConnector*> linkeds;
     };
@@ -37,7 +40,8 @@ Vector2 mousePoint { 0.0f, 0.0f };
 Vector2 dragLineStartPoint = { 0.0f, 0.0f };
 Vector2 dragLineEndPoint { 0.0f, 0.0f };
 
-bool shardPower [2] = {false, false};
+bool shardPower[2] = {false, false};
+bool exitPower = false;
 
 std::unordered_map<std::string, Texture2D> textures;
 
@@ -58,6 +62,7 @@ void toggleLights() {
     for (int i = 0; i < 2; ++i) {
         shardLight[i] = shardPower[i];
     }
+    exitLight = exitPower;
 }
 
 void eraseLink(InputConnector* dragged) {
@@ -90,6 +95,23 @@ void buildConnectors() {
                                  inputs["exit"].hook.y + (inputs["exit"].hook.height / 2)};
 }
 
+void powerConnectors() {
+
+    outputs["shard0"].isPowered = shardPower[0];
+    outputs["shard1"].isPowered = shardPower[1];
+    outputs["shard2"].isPowered = true;
+
+
+    if (inputs["exit"].isConnected) {
+        inputs["exit"].isPowered = inputs["exit"].linked->isPowered;
+    }
+    else {
+        inputs["exit"].isPowered = false;
+    }
+    exitPower = inputs["exit"].isPowered;
+
+}
+
 bool clickedInputConnector() {
     // Checks if the player clicked on an input hook
     for (auto& [label, connector] : inputs) {
@@ -114,4 +136,12 @@ bool releasedOverOutputConnector() {
         }
     }
     return false;
+}
+
+
+
+void getPower(InputConnector &connector) {
+    if (connector.isConnected) {
+
+    }
 }

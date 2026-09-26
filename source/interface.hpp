@@ -23,6 +23,7 @@ Circle shardButtons[2] = {{buttonCenter[0], buttonRadius},
                           {buttonCenter[1], buttonRadius}};
 
 bool shardLight[2] = {false, false};
+bool exitLight = false;
 
 void drawBackground() {
     ClearBackground(GRAY);
@@ -69,5 +70,5 @@ void drawButtons() {
     DrawCircle(buttonCenter[1].x, buttonCenter[1].y, buttonRadius, shardLight[1] ? GREEN : RED);
 
     // Output signal
-    DrawCircle(PLATE_WIDTH + 75, buttonCenter[1].y, buttonRadius / 2, RED);
+    DrawCircle(PLATE_WIDTH + 75, buttonCenter[1].y, buttonRadius / 2, exitLight ? GREEN : RED);
 }
